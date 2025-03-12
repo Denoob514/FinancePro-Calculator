@@ -6,24 +6,8 @@
     <title>FinancePro Dashboard</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
-    <script>
-        async function fetchStockData() {
-            let stockSymbol = document.getElementById("stockSymbol").value.toUpperCase();
-            if (!stockSymbol) return;
-            
-            const response = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=demo`);
-            const data = await response.json();
-            
-            if (data["Global Quote"]) {
-                let price = data["Global Quote"]["05. price"];
-                document.getElementById("stockPrice").innerText = `Current Price: $${parseFloat(price).toFixed(2)}`;
-            } else {
-                document.getElementById("stockPrice").innerText = "Invalid stock symbol or API limit reached.";
-            }
-        }
-    </script>
     <style>
-        body { font-family: Arial, sans-serif; display: flex; transition: background-color 0.5s ease; }
+        body { font-family: Arial, sans-serif; display: flex; transition: background-color 0.5s ease; margin: 0; }
         .sidebar {
             width: 250px;
             height: 100vh;
@@ -67,20 +51,8 @@
             transition: margin-left 0.3s ease-in-out;
         }
         .container { max-width: 700px; margin: auto; padding: 20px; background: white; border-radius: 10px; box-shadow: 0px 0px 15px rgba(0,0,0,0.1); transition: transform 0.3s ease-in-out; }
-        .dashboard {
-            display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
-            margin-top: 20px;
-        }
-        .dashboard-card {
-            width: 45%;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
-            text-align: center;
-        }
+        .dashboard { display: flex; justify-content: space-around; flex-wrap: wrap; margin-top: 20px; }
+        .dashboard-card { width: 45%; background: white; padding: 20px; border-radius: 10px; box-shadow: 0px 0px 10px rgba(0,0,0,0.1); text-align: center; }
         .dashboard h2 { color: #007bff; }
         .collapsed { transform: translateX(-100%); }
         .expanded { margin-left: 0 !important; }
@@ -96,7 +68,7 @@
         <a href="#financial-tips">Financial Tips</a>
         <a href="#about">About</a>
         <button onclick="toggleDarkMode()">Toggle Dark Mode</button>
-        <button class="toggle-btn" onclick="toggleSidebar()">☰ Collapse</button>
+        <button class="toggle-btn" onclick="toggleSidebar()">☰ Toggle Menu</button>
     </div>
 
     <div class="content" id="content">
@@ -132,6 +104,21 @@
             } else {
                 sidebar.classList.add("collapsed");
                 content.style.marginLeft = "0";
+            }
+        }
+        
+        async function fetchStockData() {
+            let stockSymbol = document.getElementById("stockSymbol").value.toUpperCase();
+            if (!stockSymbol) return;
+            
+            const response = await fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${stockSymbol}&apikey=demo`);
+            const data = await response.json();
+            
+            if (data["Global Quote"]) {
+                let price = data["Global Quote"]["05. price"];
+                document.getElementById("stockPrice").innerText = `Current Price: $${parseFloat(price).toFixed(2)}`;
+            } else {
+                document.getElementById("stockPrice").innerText = "Invalid stock symbol or API limit reached.";
             }
         }
     </script>
